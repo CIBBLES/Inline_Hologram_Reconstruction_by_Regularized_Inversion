@@ -179,15 +179,24 @@ EXPE.flag_display = true;
 % - INSTRUMENTAL
 EXPE.z_s = 7.2822e-06 ;          % (m) Distance from the sensor plane to 
                                  % the object plane
-EXPE.mag = 56.7 ;                % Lens magnification
+EXPE.mag = 1.0; %56.7 ;                % Lens magnification
 EXPE.lambda = 532e-9  ;          % (m) wavelength
 EXPE.n_0 = 1.52 ;                % Medium refractive index (not mandatory)
 
 % - DIGITAL
 EXPE.pixel_size = 2.2e-6/EXPE.mag ;	% (m) % pixel size
-EXPE.fov_width = 512 ;           % field-of-view width in pixels
-EXPE.fov_height = 512 ;          % field-of-view	height in pixels
-EXPE.fov_extension_factor = 2.0; % field-of-view extension factor
+if ~exist('bLive_data', 'var') || ~bLive_data 
+    bLive_data = false;
+    EXPE.fov_width = 512 ;           % field-of-view width in pixels
+    EXPE.fov_height = 512 ;          % field-of-view	height in pixels
+else
+    EXPE.fov_width = resolution(2);
+    EXPE.fov_height = resolution(2); % TODO: When forced square bug is fixed, change this to resolution(1).
+    warning("There is a bug which forces the images to be square. " + ... 
+        "Find the source of this warning when the bug is fixed in order to un-force squareness");
+    clear resolution
+end
+EXPE.fov_extension_factor = 1.0; %2.0; % field-of-view extension factor
                             % (cannot be <1 ; if =1 => no fov extension)
 % RECONSTRUCTION PARAMETERS
 EXPE.real_constraint = [-2,0];   % a 2-element vector giving hard constraint

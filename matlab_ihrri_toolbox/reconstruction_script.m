@@ -149,9 +149,6 @@
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear all ;
-close all ;
-clc ;
 
 addpath(genpath('./'));
 
@@ -160,6 +157,8 @@ addpath(genpath('./'));
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 run('parameters');
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -222,13 +221,23 @@ end
 
 % FILL EXPERIMENT REPORT STRUCT
 EXPE.Hz = Hz;
+%EXPE.Hz = EXPE.Hz'; % TODO: MAYBE REMOVE?
 clear Gz Hz;
 
 %%%%%%%%%%%%%%%%%%
 %% LOADING DATA %%
 %%%%%%%%%%%%%%%%%%
-data = double(imread([EXPE.holodir_data,EXPE.holodatafile]));
-data = data/median(data(:));
+
+if ~exist('bLive_data', 'var') || ~bLive_data 
+    phase_fig = 0;
+    opacity_fig = 0;
+    residue_fig = 0;
+    bLive_data = false;
+    data = double(imread([EXPE.holodir_data,EXPE.holodatafile]));
+    data = double(data) / double(median(data(:)));
+else
+    data = preprocess_data(snapshot(cam));
+end
 
 % if (EXPE.flag_fov_extension)
 %     data = fovExtensionOperator(data,EXPE.fov_extension_factor);
@@ -350,35 +359,17 @@ EXPE.RECoptions = RECoptions;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 disp('Let''s reconstruct !');
-switch EXPE.flag_rec_meth
-    case 'RI'
-        [RECxopt,RECevolcost] = algoRI(EXPE.o0,Crit,RECoptions);
-    case 'Fienup'
-        [RECxopt,RECevolcost] = algoFienupER(EXPE.o0,Crit,RECoptions);
-end
 
-% FILL EXPERIMENT REPORT STRUCT
-EXPE.evolcost = RECevolcost;
-EXPE.xopt = RECxopt;
-
-% DISPLAY RECONSTRUCTION
-if (EXPE.flag_display)
-    %% Reconstruction
-    if (~strcmp(EXPE.type_obj,'Fienup') && ((strcmp(EXPE.type_obj,'dephasing') || strcmp(EXPE.type_obj,'absorbing'))...
-                && EXPE.flag_linearize))
-        if (strcmp(EXPE.type_obj,'dephasing'))
-            ihrri_show(RECxopt,'Reconstructed phase');
-        elseif (strcmp(EXPE.type_obj,'absorbing'))
-            ihrri_show(-RECxopt,'Reconstructed opacity');
-        end
-    else
-        RECxopt = 1.0 + RECxopt(:,:,1) + 1i * RECxopt(:,:,2);
-        ihrri_show(angle(RECxopt),'Reconstructed phase');
-        ihrri_show(abs(RECxopt),'Reconstructed modulus');
+if bLive_data
+    while true
+        data = preprocess_data(snapshot(cam));
+        EXPE.data = data;
+        run('reconstruct');
+        run('display_reconstruction');
     end
-    %% Residues
-    [fxopt,gxopt,c,residues] = Crit(EXPE.xopt);
-    ihrri_show(residues,'Residues');
+else
+    run('reconstruct');
+    run('display_reconstruction');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

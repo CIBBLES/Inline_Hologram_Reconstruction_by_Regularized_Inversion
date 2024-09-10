@@ -62,6 +62,7 @@ else
 end
 
 if (flag_pad)
+    % BUG: This code only works for square images!!!
     xconv = ifftshift(ifft2(fft2(ifftshift(fovExtensionOperator(x,2,0,ext_val))).*H));
     xconv = fovExtensionOperator(xconv,2,1);
 else

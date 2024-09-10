@@ -6,6 +6,7 @@ function [] = ihrri_show(im, varargin)
 % VARARGIN arguments:
 %
 %   - varargin{1} : figure title.
+%   - varargin{2} : figure to use (if not using new figure).
 %
 % See also figure, imagesc.
 %
@@ -16,6 +17,9 @@ function [] = ihrri_show(im, varargin)
 %           F-42000 Saint-Étienne,
 %           France
 %           fabien.momey@univ-st-etienne.fr
+%
+% Edited by Joseph Fiddes: 09/06/2024 (mm/dd/yyyy)
+%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,9 +52,16 @@ function [] = ihrri_show(im, varargin)
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+prev_fig = gcf;
+
 figtitle = ['IHRRI Figure'];
-if (nargin <= 2)
-    if (nargin==2)
+if (nargin <= 3)
+    figure_to_use = 0;
+    if (nargin == 3)
+        figure_to_use = varargin{2};
+    end
+
+    if (nargin >= 2)
         if (ischar(varargin{1}))
             figtitle = varargin{1};
         else
@@ -58,7 +69,7 @@ if (nargin <= 2)
         end
     end
 else
-    error('Wrong number of VARARGIN arguments: only the FIGURE TITLE (CHAR) can be specified');
+    error('Wrong number of VARARGIN arguments: only the FIGURE TITLE (CHAR) and FIGURE TO USE (FIGURE OR NULL) can be specified');
 end
 
 % get screen size
@@ -66,12 +77,21 @@ scrsz = get(groot,'ScreenSize');
 % get image size
 imsize = size(im);
 
-h = figure('Name',figtitle,'Position',[scrsz(3)/4 scrsz(4)/2 imsize(2) imsize(1)]);
+if figure_to_use == 0
+    h = figure('Name',figtitle,'Position', ...
+        [scrsz(3)/4, max(0, (scrsz(4)-imsize(1))/2), imsize(2), imsize(1)]);
+else
+    h = figure(figure_to_use);
+end
 imagesc(im); colormap(gray);
 axis xy;
 ax = gca;
-ax.BoxStyle = 'full';
-ax.Box = 'on';
-ax.XTick = [];
-ax.YTick = [];
-set(ax,'Position',get(ax,'OuterPosition'));
+if ~strcmp(ax.BoxStyle, 'full')
+    ax.BoxStyle = 'full';
+    ax.Box = 'on';
+    ax.XTick = [];
+    ax.YTick = [];
+    set(ax,'Position',get(ax,'OuterPosition'));
+end
+
+figure(prev_fig);
