@@ -52,6 +52,7 @@ function [] = ihrri_show(im, varargin)
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+persistent used_figures;
 prev_fig = gcf;
 
 figtitle = ['IHRRI Figure'];
@@ -83,15 +84,21 @@ if figure_to_use == 0
 else
     h = figure(figure_to_use);
 end
+disp(h.Number)
+disp(im(1:3,1:7))
 imagesc(im); colormap(gray);
 axis xy;
 ax = gca;
-if ~strcmp(ax.BoxStyle, 'full')
+
+figure_already_used = ismember(h.Number, used_figures);
+
+if ~figure_already_used
     ax.BoxStyle = 'full';
     ax.Box = 'on';
     ax.XTick = [];
     ax.YTick = [];
     set(ax,'Position',get(ax,'OuterPosition'));
+    used_figures(end+1) = h.Number;
 end
 
 figure(prev_fig);
