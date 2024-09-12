@@ -3,7 +3,16 @@ close all ;
 clc ;
 
 bLive_data = true;
-cam = webcam("HY-500B");
+try
+    cam = webcam("HY-500B");
+catch e
+     if strcmp(e.identifier,'MATLAB:webcam:invalidName')
+         warning("Hayeur camera not found. Using default camera.")
+         cam = webcam(1);
+     else
+         rethrow(e);
+     end
+end
 cam.Resolution = cam.AvailableResolutions{end};
 resolution = str2double(extract(cam.Resolution, digitsPattern));
 
