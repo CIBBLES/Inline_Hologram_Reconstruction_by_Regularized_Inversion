@@ -127,7 +127,11 @@ EXPE.holodatafile = 'AmeliaPRIMEM2_2A4_3000.tif';
 % Creation of the global results' directory
 holodir_results = [EXPE.holodir,'results/'];
 if (~exist(holodir_results,'dir'))
-    mkdir(EXPE.holodir,'results/');
+    if isempty(EXPE.holodir)
+        mkdir('results/');
+    else
+        mkdir(EXPE.holodir,'results/');
+    end
 end
 
 % Creation of the experiment results' directory and filenames
