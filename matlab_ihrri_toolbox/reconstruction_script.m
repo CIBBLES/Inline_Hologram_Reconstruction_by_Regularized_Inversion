@@ -149,9 +149,9 @@
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clear all ;
-close all ;
-clc ;
+clc
+clear all
+close all
 
 addpath(genpath('./'));
 
@@ -376,9 +376,15 @@ if (EXPE.flag_display)
         ihrri_show(angle(RECxopt),'Reconstructed phase');
         ihrri_show(abs(RECxopt),'Reconstructed modulus');
     end
+
     %% Residues
     [fxopt,gxopt,c,residues] = Crit(EXPE.xopt);
     ihrri_show(residues,'Residues');
+else
+    data = preprocess_data(EXPE.data);
+    EXPE.data = data;
+    run('reconstruct');
+    run('display_reconstruction');
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
