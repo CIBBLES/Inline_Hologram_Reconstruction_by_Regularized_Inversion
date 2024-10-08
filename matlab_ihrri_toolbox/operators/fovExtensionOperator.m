@@ -50,6 +50,10 @@ function [x_ext] = fovExtensionOperator(x,fov_extension_factor,varargin)
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% Hack to get live video feed to work
+% Should definitely not be used in a real production.
+pause(0.001)
+
 flag_transp = false;
 ext_val = 0;
 if (nargin>2)
