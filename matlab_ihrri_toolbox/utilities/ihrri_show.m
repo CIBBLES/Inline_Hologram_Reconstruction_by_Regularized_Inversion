@@ -7,6 +7,8 @@ function [] = ihrri_show(im, varargin)
 %
 %   - varargin{1} : figure title.
 %   - varargin{2} : figure to use (if not using new figure).
+%   - varargin{3} : if true (and present), plot as surface, rather than
+%                   image.
 %
 % See also figure, imagesc.
 %
@@ -56,9 +58,17 @@ persistent used_figures;
 prev_fig = gcf;
 
 figtitle = ['IHRRI Figure'];
-if (nargin <= 3)
+bPlot_as_surface = false;
+
+if (nargin <= 4)
     figure_to_use = 0;
-    if (nargin == 3)
+
+    if (nargin == 4)
+        if (varargin{3})
+            bPlot_as_surface = true;
+        end
+    end
+    if (nargin >= 3)
         figure_to_use = varargin{2};
     end
 
@@ -70,7 +80,7 @@ if (nargin <= 3)
         end
     end
 else
-    error('Wrong number of VARARGIN arguments: only the FIGURE TITLE (CHAR) and FIGURE TO USE (FIGURE OR NULL) can be specified');
+    error('Wrong number of VARARGIN arguments: only the FIGURE TITLE (CHAR), FIGURE TO USE (FIGURE OR NULL), and PLOT AS SURFACE (BOOL) can be specified');
 end
 
 % get screen size
@@ -86,11 +96,26 @@ else
 end
 disp(h.Number)
 disp(im(1:3,1:7))
-imagesc(im); colormap(gray);
-axis xy;
-ax = gca;
+
 
 figure_already_used = ismember(h.Number, used_figures);
+
+if bPlot_as_surface
+    if figure_already_used
+        cpos = campos;
+        ctgt = camtarget;
+        surf(1:size(im,1), 1:size(im,2), im, 'EdgeColor', 'none')
+        campos(cpos)
+        camtarget(ctgt)
+    else
+        surf(1:size(im,1), 1:size(im,2), im, 'EdgeColor', 'none')
+    end
+else
+    imagesc(im); colormap(gray);
+    axis xy;
+end
+ax = gca;
+
 
 if ~figure_already_used
     ax.BoxStyle = 'full';
