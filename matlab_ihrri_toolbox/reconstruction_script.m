@@ -227,12 +227,27 @@ clear Gz Hz;
 %%%%%%%%%%%%%%%%%%
 
 if ~exist('bLive_data', 'var') || ~bLive_data 
+    close all
     phase_fig = 0;
     opacity_fig = 0;
     residue_fig = 0;
     bLive_data = false;
-    data = double(imread([EXPE.holodir_data,EXPE.holodatafile]));
-    data = double(data) / double(median(data(:)));
+    % DATA HAS ALREADY BEEN READ.
+    %data = double(imread([EXPE.holodir_data,EXPE.holodatafile]));
+    data = data / double(median(data(:)));
+    if length(size(data)) == 3
+        % Convert rgb data to greyscale. A few methods are presented.
+        %data = rgb2gray(data);
+        %data = data(:,:,1);
+        data = 1/3 * (data(:,:,1) + data(:,:,2) + data(:,:,3));
+
+        % Resize data to square shape (an unfortunate consequence of a bug in the
+        % reconstruction formula which only allows it to work with squares.)
+        [old_y, old_x] = size(data);
+        new_xbounds = [(old_x - old_y) / 2, (old_x + old_y) / 2 - 1];
+        data = data(:, new_xbounds(1):new_xbounds(2));
+        data = double(data) / double(median(data(:)));
+    end
 else
     data = preprocess_data(snapshot(cam));
 end

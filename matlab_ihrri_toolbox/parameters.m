@@ -188,8 +188,12 @@ EXPE.n_0 = 1;                % Medium refractive index (not mandatory)
 EXPE.pixel_size = 2.2e-6/EXPE.mag ;	% (m) % pixel size
 if ~exist('bLive_data', 'var') || ~bLive_data 
     bLive_data = false;
-    EXPE.fov_width = 512 ;           % field-of-view width in pixels
-    EXPE.fov_height = 512 ;          % field-of-view	height in pixels
+
+    % We load the data early since we need to know its resolution.
+    data = double(imread([EXPE.holodir_data,EXPE.holodatafile]));
+
+    EXPE.fov_width = size(data,1) ;           % field-of-view width in pixels
+    EXPE.fov_height = size(data,1) ;          % field-of-view	height in pixels
 else
     EXPE.fov_width = resolution(2);
     EXPE.fov_height = resolution(2); % TODO: When forced square bug is fixed, change this to resolution(1).
