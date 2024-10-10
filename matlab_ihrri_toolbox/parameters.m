@@ -120,15 +120,9 @@ EXPE = struct();
 % Global directory
 EXPE.holodir = [''];
 % Data directory
-<<<<<<< Updated upstream
-EXPE.holodir_data = [EXPE.holodir,'data/2019_06_07_billes1mu_63_JOSAA/'];
-% Data filename
-EXPE.holodatafile = 'Basler daA1920-30um (22030948)_20190607_122251706_0012_crop.tiff';
-=======
 EXPE.holodir_data = [EXPE.holodir,'data/17_09/'];
 % Data filename
 EXPE.holodatafile = 'TofPhighPIN4umM2_4D17_07SS100.tif';
->>>>>>> Stashed changes
 
 % Creation of the global results' directory
 holodir_results = [EXPE.holodir,'results/'];
@@ -183,20 +177,12 @@ EXPE.flag_display = true;
 % CALIBRATION PARAMETERS:
 
 % - INSTRUMENTAL
-<<<<<<< Updated upstream
-EXPE.z_s = 7.2822e-06 ;          % (m) Distance from the sensor plane to 
-                                 % the object plane
-EXPE.mag = 1.0; %56.7 ;                % Lens magnification
-EXPE.lambda = 532e-9  ;          % (m) wavelength
-EXPE.n_0 = 1.52 ;                % Medium refractive index (not mandatory)
-=======
 EXPE.z_s = 2e-2;                % (m) Distance from the sensor plane to 
                                  % the object plane
 
 EXPE.mag = 1;                  % Lens magnification
 EXPE.lambda = 650e-9  ;          % (m) wavelength
 EXPE.n_0 = 1;                % Medium refractive index (not mandatory)
->>>>>>> Stashed changes
 
 % - DIGITAL
 EXPE.pixel_size = 2.2e-6/EXPE.mag ;	% (m) % pixel size
@@ -211,11 +197,7 @@ else
         "Find the source of this warning when the bug is fixed in order to un-force squareness");
     clear resolution
 end
-<<<<<<< Updated upstream
-EXPE.fov_extension_factor = 1.0; %2.0; % field-of-view extension factor
-=======
 EXPE.fov_extension_factor = 1.0; % field-of-view extension factor
->>>>>>> Stashed changes
                             % (cannot be <1 ; if =1 => no fov extension)
 
 % RECONSTRUCTION PARAMETERS
@@ -237,11 +219,7 @@ EXPE.imag_constraint = [-1,1];   % a 2-element vector giving hard constraint
 %                           \_ TYPE_OBJ = 'unknown'
 %                               \_ default: [-1,1] (because 0 < |T| < 1
 %                                                   and -1 < sin(phi) < 1)
-<<<<<<< Updated upstream
-EXPE.muSparse = 0.001;             % hyperparameter for the sparsity constraint
-=======
 EXPE.muSparse = 0.0001;           % hyperparameter for the sparsity constraint
->>>>>>> Stashed changes
                             % (soft-thresholding operator)
 EXPE.muEdgePres = 0.1;           % hyperparameter \mu for the edge-preserving
                             % regularizer (if required)
