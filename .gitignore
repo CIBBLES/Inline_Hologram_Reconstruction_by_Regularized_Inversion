@@ -33,4 +33,10 @@ codegen/
 octave-workspace
 
 ##################################
+# Don't upload results
+*/results
+*.tiff
+*.tif
+*.png
+*.fits
 experiment.mat

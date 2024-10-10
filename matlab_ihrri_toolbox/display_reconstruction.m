@@ -14,8 +14,17 @@ if (EXPE.flag_display)
         end
     else
         RECxopt = 1.0 + RECxopt(:,:,1) + 1i * RECxopt(:,:,2);
-        ihrri_show(angle(RECxopt),'Reconstructed phase', phase_fig);
-        ihrri_show(abs(RECxopt),'Reconstructed modulus', opacity_fig);
+        angle_RECxopt = angle(RECxopt);
+        abs_RECxopt = abs(RECxopt);
+
+        % Pass true as fourth argument of ihrri_show to have a surface plot
+        % instead of an image.
+        % I'd recommend passing the image through some sort of low-pass
+        % filter i.e. imgaussfilt(im).
+        angle_RECxopt = imgaussfilt(angle_RECxopt,4);
+        
+        ihrri_show(angle_RECxopt,'Reconstructed phase', phase_fig, true);
+        ihrri_show(abs_RECxopt,'Reconstructed modulus', opacity_fig);
     end
     %% Residues
     [fxopt,gxopt,c,residues] = Crit(EXPE.xopt);

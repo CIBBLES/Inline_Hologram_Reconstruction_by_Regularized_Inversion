@@ -149,7 +149,6 @@
 % OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
 addpath(genpath('./'));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -372,6 +371,11 @@ if bLive_data
         run('display_reconstruction');
     end
 else
+    % %% Residues
+    % [fxopt,gxopt,c,residues] = Crit(EXPE.xopt);
+    % ihrri_show(residues,'Residues');
+    % data = preprocess_data(EXPE.data);
+    % EXPE.data = data;
     run('reconstruct');
     run('display_reconstruction');
 end

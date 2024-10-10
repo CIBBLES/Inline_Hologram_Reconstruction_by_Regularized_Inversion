@@ -124,10 +124,15 @@ EXPE.holodir_data = [EXPE.holodir,'data/17_09/'];
 % Data filename
 EXPE.holodatafile = 'TofPhighPIN4umM2_4D17_07SS100.tif';
 
+
 % Creation of the global results' directory
 holodir_results = [EXPE.holodir,'results/'];
 if (~exist(holodir_results,'dir'))
-    mkdir(EXPE.holodir,'results/');
+    if isempty(EXPE.holodir)
+        mkdir('results/');
+    else
+        mkdir(EXPE.holodir,'results/');
+    end
 end
 
 % Creation of the experiment results' directory and filenames
@@ -150,7 +155,7 @@ EXPE.holodir_results_timestamp = [EXPE.holodir_results_expe,newdate_expe,'/'];
 %% I choose the reconstruction method: 'Fienup' or 'RI'
 EXPE.flag_rec_meth = 'RI';
 %% Choose Fienup criterion (only useful if flag_rec_meth = 'RI')
-EXPE.flag_fienup = false;
+EXPE.flag_fienup = true;
 
 %% My object of interest is purely 'dephasing' or 'absorbing', or 'unknown'.
 %% It allows to define the propagation kernel and default bound constraints.
@@ -185,7 +190,7 @@ EXPE.lambda = 650e-9  ;          % (m) wavelength
 EXPE.n_0 = 1;                % Medium refractive index (not mandatory)
 
 % - DIGITAL
-EXPE.pixel_size = 2.2e-6/EXPE.mag ;	% (m) % pixel size
+EXPE.pixel_size = 1.55e-6/EXPE.mag ;	% (m) % pixel size
 if ~exist('bLive_data', 'var') || ~bLive_data 
     bLive_data = false;
 
@@ -201,6 +206,7 @@ else
         "Find the source of this warning when the bug is fixed in order to un-force squareness");
     clear resolution
 end
+
 EXPE.fov_extension_factor = 1.0; % field-of-view extension factor
                             % (cannot be <1 ; if =1 => no fov extension)
 
@@ -223,7 +229,8 @@ EXPE.imag_constraint = [-1,1];   % a 2-element vector giving hard constraint
 %                           \_ TYPE_OBJ = 'unknown'
 %                               \_ default: [-1,1] (because 0 < |T| < 1
 %                                                   and -1 < sin(phi) < 1)
-EXPE.muSparse = 0.0001;           % hyperparameter for the sparsity constraint
+
+EXPE.muSparse = 0.0001; %0.0001            % hyperparameter for the sparsity constraint
                             % (soft-thresholding operator)
 EXPE.muEdgePres = 0.1;           % hyperparameter \mu for the edge-preserving
                             % regularizer (if required)
