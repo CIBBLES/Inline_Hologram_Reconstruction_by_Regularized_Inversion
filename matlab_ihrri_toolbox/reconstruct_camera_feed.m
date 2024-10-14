@@ -2,6 +2,9 @@ clear all ;
 close all ;
 clc ;
 
+% Make sure this is always false when commiting.
+bDEBUG_LowRes = false;
+
 bLive_data = true;
 try
     cam = webcam("HY-500B");
@@ -13,16 +16,33 @@ catch e
          rethrow(e);
      end
 end
-cam.Resolution = cam.AvailableResolutions{end};
+
+% Available resolutions
+%{'2592x1944'}   
+%{'2048x1536'} 
+%{'1920x1080'}  
+%{'1600x1200'} 
+%{'1280x960'}  
+%{'1280x720'} 
+%{'1024x768'}  
+%{'800x600'}  
+%{'640x480'}
+%{'320x240'}
+
+if bDEBUG_LowRes
+    cam.Resolution = cam.AvailableResolutions{end};
+else
+    cam.Resolution = cam.AvailableResolutions{1};
+end
 resolution = str2double(extract(cam.Resolution, digitsPattern));
 
 cam_fig = figure();
 hImage = image(zeros(resolution(2), resolution(1), 3));
 preview(cam, hImage)
 
-phase_fig = figure();
-opacity_fig = figure();
-residue_fig = figure();
+phase_fig = figure("Name", "Phase");
+opacity_fig = figure("Name", "Reconstructed Modulus");
+residue_fig = figure("Name", "Residue");
 figure(cam_fig);
 
 run('reconstruction_script');
