@@ -21,12 +21,13 @@ if (EXPE.flag_display)
         % instead of an image.
         % I'd recommend passing the image through some sort of low-pass
         % filter i.e. imgaussfilt(im).
-        angle_RECxopt = imgaussfilt(angle_RECxopt,4);
+        %angle_RECxopt = imgaussfilt(angle_RECxopt,1);
         
-        ihrri_show(angle_RECxopt,'Reconstructed phase', phase_fig, true);
-        ihrri_show(abs_RECxopt,'Reconstructed modulus', opacity_fig);
+        ihrri_show(angle_RECxopt,'Reconstructed phase', phase_surf_fig, true);
+        ihrri_show(angle_RECxopt,'Reconstructed phase', phase_fig);
+        %ihrri_show(abs_RECxopt,'Reconstructed modulus', opacity_fig);
     end
     %% Residues
     [fxopt,gxopt,c,residues] = Crit(EXPE.xopt);
-    ihrri_show(residues,'Residues', residue_fig);
+    %ihrri_show(residues,'Residues', residue_fig);
 end

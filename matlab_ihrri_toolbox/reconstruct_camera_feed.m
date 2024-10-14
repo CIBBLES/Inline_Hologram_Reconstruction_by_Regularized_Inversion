@@ -41,9 +41,11 @@ hImage = image(zeros(resolution(2), resolution(1), 3));
 preview(cam, hImage)
 
 data_fig = figure("Name", "Data");
+data_surf_fig = figure("Name", "Data Surface");
 phase_fig = figure("Name", "Phase");
-opacity_fig = figure("Name", "Reconstructed Modulus");
-residue_fig = figure("Name", "Residue");
+phase_surf_fig = figure("Name", "Phase Surface");
+%opacity_fig = figure("Name", "Reconstructed Modulus");
+%residue_fig = figure("Name", "Residue");
 figure(cam_fig);
 
 run('parameters')
