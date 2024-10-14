@@ -155,7 +155,11 @@ addpath(genpath('./'));
 %% LOAD EXPERIMENT PARAMETERS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-run('parameters');
+% Parameters gets run by reconstruct_camera_feed, and then updated by
+% Holography_UI
+if ~exist('bLive_data', 'var') || ~bLive_data 
+    run('parameters');
+end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -256,7 +260,11 @@ end
 % end
 
 if (EXPE.flag_display)
-    ihrri_show(data, 'Data');
+    if exist('data_fig', 'var')
+        ihrri_show(data, 'Data', data_fig);
+    else
+        ihrri_show(data, 'Data');
+    end
 end
 
 % FILL EXPERIMENT REPORT STRUCT
@@ -364,25 +372,23 @@ EXPE.RECoptions = RECoptions;
 disp('Let''s reconstruct !');
 
 if bLive_data
-    while true
-        data = preprocess_data(snapshot(cam));
-        EXPE.data = data;
-        run('reconstruct');
-        run('display_reconstruction');
-    end
-else
-    % %% Residues
-    % [fxopt,gxopt,c,residues] = Crit(EXPE.xopt);
-    % ihrri_show(residues,'Residues');
-    % data = preprocess_data(EXPE.data);
-    % EXPE.data = data;
-    run('reconstruct');
-    run('display_reconstruction');
+    data = preprocess_data(snapshot(cam));
+    EXPE.data = data;
 end
+
+% %% Residues
+% [fxopt,gxopt,c,residues] = Crit(EXPE.xopt);
+% ihrri_show(residues,'Residues');
+% data = preprocess_data(EXPE.data);
+% EXPE.data = data;
+run('reconstruct');
+run('display_reconstruction');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% RESULTS UNSTACKING AND SAVING %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % SAVING
-save([EXPE.holodir_results_timestamp,'experiment.mat'],'-struct','EXPE');
+if ~bLive_data
+    save([EXPE.holodir_results_timestamp,'experiment.mat'],'-struct','EXPE');
+end

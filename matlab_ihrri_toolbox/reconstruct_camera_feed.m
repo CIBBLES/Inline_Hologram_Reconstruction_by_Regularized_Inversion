@@ -40,12 +40,13 @@ cam_fig = figure();
 hImage = image(zeros(resolution(2), resolution(1), 3));
 preview(cam, hImage)
 
+data_fig = figure("Name", "Data");
 phase_fig = figure("Name", "Phase");
 opacity_fig = figure("Name", "Reconstructed Modulus");
 residue_fig = figure("Name", "Residue");
 figure(cam_fig);
 
-run('reconstruction_script');
+run('parameters')
 
-% We only appear to receive video frames after the code has finished
-% reconstructing an image.
+% reconstruction_script is now run by Holography_UI.
+%run('reconstruction_script');

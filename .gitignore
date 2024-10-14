@@ -40,3 +40,4 @@ octave-workspace
 *.png
 *.fits
 experiment.mat
+*.prj
