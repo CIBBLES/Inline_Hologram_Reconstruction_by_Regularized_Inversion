@@ -42,8 +42,8 @@ preview(cam, hImage)
 
 data_fig = figure("Name", "Data");
 data_surf_fig = figure("Name", "Data Surface");
-phase_fig = figure("Name", "Phase");
-phase_surf_fig = figure("Name", "Phase Surface");
+phase_fig = figure("Name", "Phase Reconstruction");
+phase_surf_fig = figure("Name", "Phase Reconstruction Surface");
 %opacity_fig = figure("Name", "Reconstructed Modulus");
 %residue_fig = figure("Name", "Residue");
 figure(cam_fig);

@@ -182,7 +182,7 @@ EXPE.flag_display = true;
 % CALIBRATION PARAMETERS:
 
 % - INSTRUMENTAL
-EXPE.z_s = 2e-2;                % (m) Distance from the sensor plane to 
+EXPE.z_s = 1.5e-2;                % (m) Distance from the sensor plane to 
                                  % the object plane
 
 EXPE.mag = 1;                  % Lens magnification
@@ -190,7 +190,7 @@ EXPE.lambda = 650e-9  ;          % (m) wavelength
 EXPE.n_0 = 1;                % Medium refractive index (not mandatory)
 
 % - DIGITAL
-EXPE.pixel_size = 1.55e-6/EXPE.mag ;	% (m) % pixel size
+EXPE.pixel_size = 2.2e-6/EXPE.mag ;	% (m) % pixel size
 if ~exist('bLive_data', 'var') || ~bLive_data 
     bLive_data = false;
 
@@ -230,7 +230,7 @@ EXPE.imag_constraint = [-1,1];   % a 2-element vector giving hard constraint
 %                               \_ default: [-1,1] (because 0 < |T| < 1
 %                                                   and -1 < sin(phi) < 1)
 
-EXPE.muSparse = 0.0001; %0.0001            % hyperparameter for the sparsity constraint
+EXPE.muSparse = 1e-5; %0.0001            % hyperparameter for the sparsity constraint
                             % (soft-thresholding operator)
 EXPE.muEdgePres = 0.1;           % hyperparameter \mu for the edge-preserving
                             % regularizer (if required)
@@ -240,7 +240,7 @@ EXPE.epsilonEdgePres = 1.0e-2;   % hyperparameter \epsilon for the
                             %% NOT YET AVAILABLE
 
 % OPTIMIZATION PARAMETERS
-EXPE.maxiter = 5;              % maximum number of iterations
+EXPE.maxiter = 1;              % maximum number of iterations
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

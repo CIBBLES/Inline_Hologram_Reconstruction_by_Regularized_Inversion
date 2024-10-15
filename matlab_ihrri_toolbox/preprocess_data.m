@@ -1,7 +1,7 @@
 function cam_data = preprocess_data(cam_data)
 % Preprocesses the data from the camera, to put it in the right format.
-% cam_data = rgb2gray(cam_data);
-cam_data = 1/3 * (cam_data(:,:,1) + cam_data(:,:,2) + cam_data(:,:,3));
+cam_data = rgb2gray(cam_data);
+% cam_data = 1/3 * (cam_data(:,:,1) + cam_data(:,:,2) + cam_data(:,:,3));
 
 
 % Resize data to square shape (an unfortunate consequence of a bug in the

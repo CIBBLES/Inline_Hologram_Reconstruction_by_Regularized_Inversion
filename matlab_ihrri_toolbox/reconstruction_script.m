@@ -262,7 +262,9 @@ end
 if (EXPE.flag_display)
     if exist('data_fig', 'var')
         ihrri_show(data, 'Data', data_fig);
-        ihrri_show(data, 'Data', data_surf_fig, true);
+        gauss_data = imgaussfilt(data,4);
+        ihrri_show(gauss_data, 'Data', data_surf_fig, true);
+        
     else
         ihrri_show(data, 'Data');
     end
